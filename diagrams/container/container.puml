@@ -1,0 +1,43 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+title Диаграмма контейнеров "Теплый дом"
+
+top to bottom direction
+
+Person(user, "User", "Пользователь системы")
+Person(admin, "Administrator", "Сотрудник организации")
+
+Container_Boundary(Warmhouse, "Теплый дом") {
+  Container(ApiGateway, "ApiGateway", "Kong/Spring Api Gateway/Zuul", "Паттерн Api Gateway")
+  Container(FrontWebApp, "Фронтенд", "Angular/React/Vue", "Пользовательский интерфейс")
+  Container(BFF, "Сервис BFF", "Java Spring Boot", "Сервис BFF")
+  Container(ManageSensor, "Управление устройствами", "Java Spring Boot", "Управление устройствами")
+  ContainerDb(ManageSensorDb, "База данных управления устройств", "PostgreSQL", "База данных управления устройств")
+  Container(ControlService, "Контроль состояния устройств и метрик", "Java Spring Boot", "Контроль состояния устройств и метрик")
+  ContainerDb(ControlServiceDb, "База данных контроль состояния устройств и метрик", "PostgreSQL", "База данных контроль состояния устройств и метрик")
+  Container(NotificationService, "Сервис информирования", "Java Spring Boot", "Сервис информирования")
+  ComponentQueue(KafkaService, "Брокер обмена сообщениями", "Kafka", "Брокер обмена сообщениями")
+}
+
+System_Ext(sensor, "Внешнее устройство", "Внешнее устройство. Датчик температуры")
+System_Ext(security, "Сервис авторизации и аутентификации", "Сервис авторизации и аутентификации")
+
+Rel(user, ApiGateway, "Используют приложение")
+Rel(admin, ApiGateway, "Администрируют приложение")
+Rel(ApiGateway, FrontWebApp, "Перенаправление запросов с возможностью администрирования и управления")
+Rel(ApiGateway, security, "Авторизация и аутентификация пользователей")
+Rel(security, ApiGateway, "Авторизация и аутентификация пользователей")
+Rel(FrontWebApp, BFF, "Запросы на бэкенд")
+Rel(BFF, ManageSensor, "Перенаправление запроса")
+Rel(BFF, ControlService, "Перенаправление запроса")
+Rel(ManageSensor, ManageSensorDb, "Запросы в БД")
+Rel(ControlService, ControlServiceDb, "Запросы в БД")
+Rel(NotificationService, user, "Информирование о событиях")
+Rel(NotificationService, admin, "Информирование о событиях")
+Rel(NotificationService, FrontWebApp, "Информирование о событиях")
+Rel(KafkaService, NotificationService, "Информирование о событиях")
+Rel(ManageSensor, KafkaService, "Информирование о событиях")
+Rel(ControlService, KafkaService, "Информирование о событиях")
+Rel(sensor, KafkaService, "Информирование о событиях устройств")
+@enduml

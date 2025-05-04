@@ -1,0 +1,65 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+title Диаграмма кода "Теплый дом"
+
+top to bottom direction
+
+class User {
+  +String name
+  +String email
+  +void register()
+  +void login()
+}
+
+class House {
+  +String address
+  +Boolean enable
+  +List<Sensor> sensors
+  +void activate()
+  +void cancel()
+}
+
+class UserHouse {
+  +User user
+  +House house
+  +void crud()
+}
+
+class SensorType {
+  +String name
+  +void crud()
+}
+
+class Sensor {
+  +String name
+  +SensorType type
+  +Boolean activate
+  +void crud()
+  +void activate()
+}
+
+class Metric {
+  +String name
+  +Boolean status
+  +void crud()
+  +void changeStatus()
+}
+
+class SensorMetric {
+  +Sensor sensor
+  +Metric metric
+  +String value
+  +LocalDateTime dtTime
+  +void crud()
+}
+
+
+User "*" -- "*" UserHouse : has
+House "*" -- "*" UserHouse : has
+Sensor "*" -- "1" House : has
+Sensor "*" -- "1" SensorType : has
+Sensor "*" -- "*" SensorMetric : has
+Metric "*" -- "*" SensorMetric : has
+
+@enduml

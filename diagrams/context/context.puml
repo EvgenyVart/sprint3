@@ -1,0 +1,18 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+title Диаграмма контекста "Теплый дом"
+
+top to bottom direction
+
+Person(user, "User", "Пользователь системы")
+Person(admin, "Administrator", "Сотрудник организации")
+System(MonolithicApp, "Монолитное приложение", "Монолитное приложение, управление отоплением и проверка температуры")
+
+System_Ext(sensor, "Внешнее устройство", "Внешнее устройство. Датчик температуры")
+
+Rel(user,MonolithicApp, "включать/выключать отопление, просматривать состояние")
+Rel(admin,MonolithicApp,"подключить датчики")
+Rel(sensor, MonolithicApp, "Отправляет данные по запросу с сервера")
+
+@enduml

@@ -1,0 +1,61 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+title Диаграмма компонентов "Теплый дом"
+
+top to bottom direction
+
+Container_Boundary(Warmhouse, "Теплый дом") {
+  Container(ManageSensor, "Управление устройствами", "Java Spring Boot", "Управление устройствами")
+  Container(ControlService, "Контроль состояния устройств и метрик", "Java Spring Boot", "Контроль состояния устройств и метрик")
+  ContainerDb(ManageSensorDb, "База данных управления устройств", "PostgreSQL", "База данных управления устройств")
+  ContainerDb(ControlServiceDb, "База данных контроль состояния устройств и метрик", "PostgreSQL", "База данных контроль состояния устройств и метрик")
+  ComponentQueue(KafkaService, "Брокер обмена сообщениями", "Kafka", "Брокер обмена сообщениями")
+  Container(BFF, "Сервис BFF", "Java Spring Boot", "Сервис BFF")
+}
+
+Container(ManageSensor, "Управление устройствами", "Java Spring Boot") {
+  Component(ManageSensorSecurityController, "Контроллер безопасности", "Авторизация и аутентификация")
+  Component(ManageSensorUserController, "Контроллер управления пользователями", "Управление пользователями")
+  Component(ManageSensorSensorController, "Контроллер управления устройствами", "Управления устройствами")
+  Component(ManageSensorServiceLayer, "Слой сервисов", "Бизнес логика")
+  Component(ManageSensorRepositoryLayer, "Слой управления данными", "Взаимодействие с БД")
+  Component(ManageSensorBrokerService, "Слой взаимодействия с брокером сообщений", "Взаимодействие с брокером сообщений")
+}
+
+Container(ControlService, "Контроль состояния устройств и метрик", "Java Spring Boot") {
+  Component(ControlServiceSecurityController, "Контроллер безопасности", "Авторизация и аутентификация")
+  Component(ControlServiceUserController, "Контроллер управления пользователями", "Управление пользователями")
+  Component(ControlServiceMonitoringController, "Контроллер мониторинга и анализа данных с устройств", "Мониторинга и анализа данных с устройств")
+  Component(ControlServiceServiceLayer, "Слой сервисов", "Бизнес логика")
+  Component(ControlServiceRepositoryLayer, "Слой управления данными", "Взаимодействие с БД")
+  Component(ControlServiceBrokerService, "Слой взаимодействия с брокером сообщений", "Взаимодействие с брокером сообщений")
+}
+
+Rel(ManageSensorSecurityController, ManageSensorServiceLayer, "Авторизация и аутентификация")
+Rel(ManageSensorUserController, ManageSensorServiceLayer, "Вызов бизнес логики")
+Rel(ManageSensorServiceLayer, ManageSensorRepositoryLayer, "Вызов бизнес логики")
+Rel(ManageSensorSensorController, ManageSensorServiceLayer, "Вызов бизнес логики")
+Rel(ManageSensorBrokerService, ManageSensorServiceLayer, "Вызов бизнес логики")
+Rel(ManageSensorRepositoryLayer, ManageSensorDb, "CRUD операции")
+
+Rel(ControlServiceSecurityController, ControlServiceServiceLayer, "Авторизация и аутентификация")
+Rel(ControlServiceUserController, ControlServiceServiceLayer, "Информация о пользователе")
+Rel(ControlServiceServiceLayer, ControlServiceRepositoryLayer, "Вызов бизнес логики")
+Rel(ControlServiceSensorController, ControlServiceServiceLayer, "Вызов бизнес логики")
+Rel(ControlServiceBrokerService, ControlServiceServiceLayer, "Вызов бизнес логики")
+Rel(ControlServiceRepositoryLayer, ControlServiceDb, "CRUD операции")
+
+Rel(ControlServiceServiceLayer, KafkaService, "Получение/отправление сообщений")
+Rel(ManageSensorServiceLayer, KafkaService, "Получение/отправление сообщений")
+
+Rel(BFF, ManageSensorUserController, "Перенаправление запроса")
+Rel(BFF, ManageSensorSecurityController, "Перенаправление запроса")
+Rel(BFF, ManageSensorSensorController, "Перенаправление запроса")
+Rel(BFF, ManageSensorBrokerService, "Перенаправление запроса")
+
+Rel(BFF, ControlServiceUserController, "Перенаправление запроса")
+Rel(BFF, ControlServiceSecurityController, "Перенаправление запроса")
+Rel(BFF, ControlServiceSensorController, "Перенаправление запроса")
+Rel(BFF, ControlServiceBrokerService, "Перенаправление запроса")
+@enduml
