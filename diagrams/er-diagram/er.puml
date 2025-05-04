@@ -1,0 +1,62 @@
+@startuml
+
+entity User {
+  * id : UUID
+  --
+  username : VARCHAR
+  email : VARCHAR
+}
+
+entity House {
+    * id : UUID
+      --
+  address : VARCHAR
+  enable : BOOL
+}
+
+class UserHouse {
+    * id : UUID
+    --
+  user_id : UUID
+  house_id : UUID
+}
+
+class SensorType {
+    * id : UUID
+    --
+  name : VARCHAR
+}
+
+class Sensor {
+    * id : UUID
+    --
+  house_id : UUID
+  name : VARCHAR
+  type_id : UUID
+}
+
+class Metric {
+    * id : UUID
+    --
+  name : VARCHAR
+  enable : BOOL
+}
+
+class SensorMetric {
+  * id : UUID
+      --
+    user_id : UUID
+    house_id : UUID
+    value : VARCHAR
+    dt_time : TIMESTAMPS
+}
+
+
+User }|--|{ UserHouse
+House }|--|{ UserHouse
+Sensor ||--|{ House
+Sensor }|--|| SensorType
+Sensor }|--|{ SensorMetric
+Metric }|--|{ SensorMetric
+
+@enduml

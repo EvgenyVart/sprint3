@@ -50,6 +50,7 @@ class SensorMetric {
   +Sensor sensor
   +Metric metric
   +String value
+  +LocalDateTime dtTime
   +void crud()
 }
 
