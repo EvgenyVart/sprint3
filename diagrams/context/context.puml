@@ -1,7 +1,7 @@
 @startuml
-!include /template-c4-plantuml/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
 
-title Диаграмма контекста "Теплый дом", монолитная архитектура
+title Диаграмма контекста "Теплый дом"
 
 top to bottom direction
 

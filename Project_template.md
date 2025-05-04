@@ -44,7 +44,7 @@
 Диаграмму контекста в модели C4.
 
 ```markdown
-[Диаграмма контекста](https://github.com/EvgenyVart/sprint3/blob/main/diagrams/context-warmhouse-asis.puml)
+[Диаграмма контекста](https://github.com/EvgenyVart/sprint3/blob/main/diagrams/context/context.puml)
 ```
 
 # Задание 2. Проектирование микросервисной архитектуры
@@ -53,15 +53,15 @@
 
 **Диаграмма контейнеров (Containers)**
 
-Добавьте диаграмму.
+[Диаграмма контейнеров](https://github.com/EvgenyVart/sprint3/blob/main/diagrams/container/container.puml)
 
 **Диаграмма компонентов (Components)**
 
-Добавьте диаграмму для каждого из выделенных микросервисов.
+[Диаграмма компонентов](https://github.com/EvgenyVart/sprint3/blob/main/diagrams/component/component.puml)
 
 **Диаграмма кода (Code)**
 
-Добавьте одну диаграмму или несколько.
+[Диаграмма кода](https://github.com/EvgenyVart/sprint3/blob/main/diagrams/code/code.puml)
 
 # Задание 3. Разработка ER-диаграммы
 
@@ -69,11 +69,9 @@
 
 Четвёртое задание — дополнительное. Его можно сделать по желанию. Чтобы ревьюер быстрее проверил ваше решение, укажите, сделали вы это задание или нет. Для этого оставьте нужный эмодзи около заголовка задания:
 
-✅ — вы выполнили задание.
-
 ❌ — вы пропустили задание.
 
-# ✅ ❌ Задание 4. Создание и документирование API
+# ❌ Задание 4. Создание и документирование API
 
 ### 1. Тип API
 
